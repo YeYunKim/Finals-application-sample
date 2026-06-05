@@ -1,0 +1,30 @@
+import streamlit as st
+import matplotlib.pyplot as plt
+
+st.title("🍕 초등 수학: 분수 시각화 학습 도구")
+st.write("분모와 분자를 조절하며 분수의 개념을 눈으로 확인해보세요!")
+
+# 1. 사이드바에서 입력 받기
+denominator = st.sidebar.slider("분모 (전체 조각 수)", min_value=1, max_value=8, value=4)
+numerator = st.sidebar.slider("분자 (색칠할 조각 수)", min_value=1, max_value=denominator, value=1)
+
+# 2. 피자 모양(원 그래프) 그리기 데이터 준비
+# 색칠할 부분(분자)과 남은 부분(분모-분자)의 비율 계산
+if denominator == numerator:
+    sizes = [numerator]
+    colors = ['#FFD700'] # 전체가 다 색칠됨 (금색)
+else:
+    sizes = [numerator, denominator - numerator]
+    colors = ['#FFD700', '#F0F2F6'] # 색칠된 조각, 빈 조각
+
+# 3. 그래프 생성 및 출력
+fig, ax = plt.subplots()
+ax.pie(sizes, colors=colors, startangle=90, counterclock=False, 
+       wedgeprops={'edgecolor': 'white', 'linewidth': 2})
+ax.axis('equal')  # 완벽한 원으로 만들기
+
+st.pyplot(fig)
+
+# 4. 텍스트 설명
+st.subheader(f"내가 만든 분수:  {numerator} / {denominator}")
+st.write(f"전체를 똑같이 **{denominator}**조각으로 나눈 것 중 **{numerator}**조각은 전체의 **{numerator}/{denominator}** 입니다.")
